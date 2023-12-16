@@ -1,0 +1,16 @@
+{
+    "configurations": [
+      {
+        "name": "Deploy Cloud Function",
+        "type": "cloudcode.cloudfunctions",
+        "request": "launch",
+        "functionName": "cradlers",
+        "gen": "GEN_2",
+        "entryPoint": "get",
+        "revision": "cradlers-00001-rat",
+        "testInput": "",
+        "region": "europe-west1",
+        "runtime": "python312"
+      }
+    ]
+}
