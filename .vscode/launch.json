@@ -7,7 +7,7 @@
         "functionName": "cradlers",
         "gen": "GEN_2",
         "entryPoint": "get",
-        "revision": "cradlers-00004-mef",
+        "revision": "cradlers-00005-saw",
         "testInput": "",
         "region": "europe-west1",
         "runtime": "python312"
