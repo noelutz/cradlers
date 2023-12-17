@@ -1,6 +1,7 @@
 import functions_framework
 import html
 import io
+import re
 import typing
 import urllib.request
 
@@ -14,7 +15,7 @@ from typing import Generator
 def fetchTeamMembers() -> Generator[str | None, str | None, str | None]:
     with urllib.request.urlopen("http://cradle.bio/team") as response:
         soup = BeautifulSoup(response.read(), "html.parser")
-        for div in soup.find_all("div", class_="framer-szp9rx-container"):
+        for div in soup.find_all("div", attrs={"class": re.compile("framer-\w+-container")}):
             yield div.find("h2").string, div.find("p").string, div.find("img")["src"]
 
 
