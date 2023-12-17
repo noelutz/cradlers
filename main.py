@@ -15,7 +15,8 @@ from typing import Generator
 def fetchTeamMembers() -> Generator[str | None, str | None, str | None]:
     with urllib.request.urlopen("http://cradle.bio/team") as response:
         soup = BeautifulSoup(response.read(), "html.parser")
-        for div in soup.find_all("div", attrs={"class": re.compile("framer-\w+-container")}):
+        parent_div = soup.find('div', attrs={'name': 'team grid'})
+        for div in parent_div.find_all("div", attrs={"class": re.compile("framer-.*-container")}):
             yield div.find("h2").string, div.find("p").string, div.find("img")["src"]
 
 
