@@ -68,6 +68,34 @@ img {
 }
   </style>
   <script>
+    // Simple enum to represent the direction of flipping cards around.
+    const Direction = {
+	    Next: "next",
+    	Previous: "previous"
+    }
+
+    // Reveal the next or previous card in the sequence depending on the direction.
+    function reveal(direction, elts, i) {
+      if (direction == Direction.Next) {
+        if (!elts[i].getElementsByClassName('flip-card-inner')[0].classList.toggle('is-flipped')) {
+          elts[i].style.display = "none";
+          var next = (i < elts.length - 1) ? i + 1 : 0;
+          elts[next].style.display = "block";
+        }   
+      } else {
+        console.assert(direction == Direction.Previous);
+        var classes = elts[i].getElementsByClassName('flip-card-inner')[0].classList
+        if (classes.contains('is-flipped')) {
+          classes.remove('is-flipped');
+        } else {
+          elts[i].style.display = "none";
+          var next = (i > 0) ? i - 1 : elts.length - 1;
+          elts[next].style.display = "block";        
+          console.assert(elts[next].getElementsByClassName('flip-card-inner')[0].classList.toggle('is-flipped'));
+        }
+      }
+    }
+
     document.addEventListener("DOMContentLoaded", (event) => {
       // Shuffle the cards so that the names don't always appear in the same order.
       var elts = Array.from(document.getElementsByClassName('flip-card'));
@@ -76,15 +104,29 @@ img {
       for (var i = 0; i < elts.length; i++) {
         elts[i].onclick = ((i) => {
           return () => {
-            if (!elts[i].getElementsByClassName('flip-card-inner')[0].classList.toggle('is-flipped')) {
-              elts[i].style.display = "none";
-              next = (i < elts.length - 1) ? i + 1 : 0;
-              elts[next].style.display = "block";
-            }
+            reveal(Direction.Next, elts, i);
           }
         })(i);
       }
       elts[0].style.display = "block";
+
+      document.addEventListener("keydown", (event) => {
+        // Look through all of the cards to find the one that is currently displayed.
+        var current;
+        for (current = 0; current < elts.length; current++) {
+          if (elts[current].style.display == "block") {
+            break;
+          }
+        }
+        console.assert(current >= 0 && current < elts.length);
+
+        if (event.keyCode == 39) {  // Arrow right
+          reveal(Direction.Next, elts, current);
+        }
+        else if (event.keyCode == 37) { // Arrow left
+          reveal(Direction.Previous, elts, current);
+        }
+      });
     });
   </script>
   <body>
